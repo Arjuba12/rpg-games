@@ -1,4 +1,5 @@
 #include<SFML/Graphics.hpp>
+#include <iostream>
 
 int main()
 {
@@ -7,45 +8,43 @@ int main()
 	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Arjuna", sf::Style::Default,settings);
 
+	//---------------------INITIALIZE-------------------------
 
-	sf::CircleShape shape(50.0f);
-	sf::RectangleShape rectangle(sf::Vector2f(50,50));
-	sf::CircleShape triangle(50.0f, 3);
-	sf::CircleShape square(50.0f, 4);
-	sf::CircleShape hexagon(50.0f, 8);
-	//---------------------INITIALIZE-------------------------
-	//Circle
-	shape.setFillColor(sf::Color::Yellow);
-	shape.setPosition(sf::Vector2f(100,100));
-	shape.setOutlineThickness(5);
-	shape.setOutlineColor(sf::Color::Green);
-	//Rectangle
-	rectangle.setSize(sf::Vector2f(100,100));
-	rectangle.setFillColor(sf::Color::Red);
-	rectangle.setPosition(sf::Vector2f(250, 100));
-	rectangle.setOutlineThickness(5);
-	rectangle.setOutlineColor(sf::Color::Green);
-	//Triangle
-	triangle.setScale(1.3f,1.3f);
-	triangle.setFillColor(sf::Color::Cyan);
-	triangle.setPosition(sf::Vector2f(400, 100));
-	triangle.setOutlineThickness(5);
-	triangle.setOutlineColor(sf::Color::Green);
-	//Square
-	square.setFillColor(sf::Color::Magenta);
-	square.setPosition(sf::Vector2f(550,100));
-	square.setOutlineThickness(5);
-	square.setOutlineColor(sf::Color::Green);
-	// Hexagon
-	hexagon.setFillColor(sf::Color::Blue);
-	hexagon.setPosition(sf::Vector2f(670, 100));
-	hexagon.setOutlineThickness(5);
-	hexagon.setOutlineColor(sf::Color::Green);
-	//---------------------INITIALIZE-------------------------
+	//------------------------LOAD----------------------------
+	sf::Texture playerTexture;
+	sf::Sprite playerSprite;
+
+	if (playerTexture.loadFromFile("Asset/Player/Texture/PlayerSheet.png"))
+	{
+		std::cout << "Texture has been loaded!" << std::endl;
+		playerSprite.setTexture(playerTexture);
+
+		//---Manipulasi Index---
+		int xIndex = 0;
+		int yIndex = 0;
+
+		//---Rumus Posisi Render---
+		int xValue = xIndex * 64;
+		int yValue = yIndex * 64;
+
+		//---Implementasi---
+		playerSprite.setTextureRect(sf::IntRect(xValue, yValue, 64, 64));
+
+		//Manipulasi ukuran sprite
+		playerSprite.setScale(sf::Vector2f(3, 3));
+	}
+	else
+	{
+		std::cout << "Texture is not loadded!" << std::endl;
+	}
+
+	//------------------------LOAD----------------------------
+	
 	//GameLoop
 	while (window.isOpen())
 	{
 	//-----------------------UPDATE---------------------------
+		//----EVENT LOOP----
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -54,15 +53,33 @@ int main()
 				window.close();
 			}
 		}
+
+		//-------------------PlayerMovement-------------------
+		sf::Vector2f position = playerSprite.getPosition();
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			playerSprite.setPosition(position + sf::Vector2f(1, 0));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			playerSprite.setPosition(position - sf::Vector2f(1, 0));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			playerSprite.setPosition(position - sf::Vector2f(0, 1));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			playerSprite.setPosition(position + sf::Vector2f(0, 1));
+		}
+		//-------------------PlayerMovement-------------------
+
 	//-----------------------UPDATE---------------------------
 
 	//------------------------DRAW----------------------------
 		window.clear(sf::Color::Black);
-		window.draw(shape);
-		window.draw(rectangle);
-		window.draw(triangle);
-		window.draw(square);
-		window.draw(hexagon);
+		window.draw(playerSprite);
 		window.display();
 	//------------------------DRAW----------------------------
 	}
