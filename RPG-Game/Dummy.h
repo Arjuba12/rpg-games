@@ -3,6 +3,10 @@
 
 class Dummy
 {
+public:
+	sf::RectangleShape boundingRectangle;
+	sf::Vector2i size;
+
 private:
 	sf::Texture texture;
 
@@ -14,6 +18,6 @@ public:
 	void Load();
 
 	void Update();
-	void Draw(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window) const;
 };
 

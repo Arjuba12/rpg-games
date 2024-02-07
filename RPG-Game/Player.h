@@ -8,7 +8,11 @@ class Player
 public:
 	std::vector<sf::CircleShape> bullets;
 	sf::Vector2f bulletDirection;
-	float bulletSpeed = 1.0f;
+
+	sf::RectangleShape boundingRectangle;
+	sf::Vector2i size;
+
+	float bulletSpeed = 5.0f;
 
 private:
 	sf::Texture texture;

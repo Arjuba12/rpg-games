@@ -3,7 +3,11 @@
 
 void Dummy::Initialize()
 {
+	boundingRectangle.setFillColor(sf::Color::Transparent);
+	boundingRectangle.setOutlineColor(sf::Color::Red);
+	boundingRectangle.setOutlineThickness(1);
 
+	size = sf::Vector2i(64, 64);
 }
 
 void Dummy::Load()
@@ -16,25 +20,28 @@ void Dummy::Load()
 		int xIndex = 0;
 		int yIndex = 0;
 
-		int xValue = xIndex * 64;
-		int yValue = yIndex * 64;
+		sprite.setTextureRect(sf::IntRect(xIndex, yIndex, size.x, size.y));
+		sprite.setPosition(240 , 320);
 
-		sprite.setTextureRect(sf::IntRect(xValue, yValue, 64, 64));
-		sprite.setScale(3, 3);
+		sprite.setScale(sf::Vector2f(3, 3));
+		boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y));
 
 	}
 	else
 	{
 		std::cout << "Dummy taxture failed to loaded!" << std::endl;
 	}
+
+
 }
 
 void Dummy::Update()
 {
-
+	boundingRectangle.setPosition(sprite.getPosition());
 }
 
-void Dummy::Draw(sf::RenderWindow& window)
+void Dummy::Draw(sf::RenderWindow& window) const
 {
+	window.draw(boundingRectangle);
 	window.draw(sprite);
 }

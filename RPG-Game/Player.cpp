@@ -2,7 +2,12 @@
 #include <iostream>
 void Player::Initialize()
 {
+	boundingRectangle.setFillColor(sf::Color::Transparent);
+	boundingRectangle.setOutlineColor(sf::Color::Blue);
+	boundingRectangle.setOutlineThickness(1);
 
+	size = sf::Vector2i(64, 64);
+	
 }
 
 void Player::Load()
@@ -16,16 +21,14 @@ void Player::Load()
 		int xIndex = 0;
 		int yIndex = 0;
 
-		//---Rumus Posisi Render---
-		int xValue = xIndex * 64;
-		int yValue = yIndex * 64;
-
 		//---Implementasi---
-		sprite.setTextureRect(sf::IntRect(xValue, yValue, 64, 64));
+		sprite.setTextureRect(sf::IntRect(xIndex, yIndex, size.x, size.y));
 
 		//Manipulasi ukuran sprite
-		sprite.setScale(sf::Vector2f(3, 3));
 		sprite.setPosition(sf::Vector2f(960, 540));
+
+		sprite.setScale(sf::Vector2f(3, 3));
+		boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y));
 	}
 	else
 	{
@@ -57,7 +60,7 @@ void Player::Update(Dummy& dummy)
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
 		bullets.push_back(sf::CircleShape(10));
-		int i = bullets.size() - 1;
+		size_t i = bullets.size() - 1;
 		bullets[i].setPosition(sprite.getPosition());
 		bullets[i].setFillColor(sf::Color::Red);
 	}
@@ -68,11 +71,19 @@ void Player::Update(Dummy& dummy)
 		bulletDirection = Math::NormalizedVector(bulletDirection);
 		bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed);
 	}
+
+	boundingRectangle.setPosition(sprite.getPosition());
+
+	if (Math::DidRectColide(sprite.getGlobalBounds(), dummy.sprite.getGlobalBounds()))
+	{
+		std::cout << "Colision" << std::endl;
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(sprite);
+	window.draw(boundingRectangle);
 
 	for (size_t i = 0; i < bullets.size(); i++)
 	{
