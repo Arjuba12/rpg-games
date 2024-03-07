@@ -2,6 +2,7 @@
 #include "Dummy.h"
 #include "FrameRate.h"
 #include "Bullet.h"
+#include "Map.h"
 #include <iostream> 
 
 // Make a Class For The Frame Rate It So Messy !!
@@ -14,6 +15,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Arjuna", sf::Style::Default, settings);
 	window.setFramerateLimit(360);
 
+	Map map;
 	Player player;
 	Dummy dummy;
 	FrameRate frameRate;
@@ -22,12 +24,14 @@ int main()
 	player.Initialize();
 	dummy.Initialize();
 	frameRate.Initialize();
+	map.Initialize();
 	//---------------------INITIALIZE-------------------------
 
 	//------------------------LOAD----------------------------
 	player.Load();
 	dummy.Load();
 	frameRate.Load();
+	map.Load();
 	
 	//------------------------LOAD----------------------------
 	sf::Clock clock;
@@ -53,11 +57,13 @@ int main()
 		frameRate.Update(deltaTime);
 		dummy.Update(deltaTime);
 		player.Update(deltaTime, dummy, mousePosition);
+		map.Update(deltaTime);
 		//-----------------------UPDATE---------------------------
 
 		//------------------------DRAW----------------------------
 		window.clear(sf::Color::Black);
 
+		map.Draw(window);
 		dummy.Draw(window);
 		player.Draw(window);
 		frameRate.Draw(window);
