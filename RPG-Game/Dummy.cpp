@@ -62,7 +62,7 @@ void Dummy::Update(float deltaTime)
 
 	if (health <= 0)
 	{
-		std::cout << "Am Dead ..." << std::endl;
+		// std::cout << "Am Dead ..." << std::endl;
 	}
 }
 

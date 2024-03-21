@@ -4,7 +4,7 @@
 
 Player::Player() :
 	playerSpeed(1.0f),
-	maxFireRate(250),
+	maxFireRate(200),
 	fireRateTimer(0),
 	damage(5)
 {
@@ -79,7 +79,7 @@ void Player::Update(float deltaTime,Dummy& dummy, sf::Vector2f mousePosition)
 	{
 		bullets.push_back(Bullet());
 		size_t i = bullets.size() - 1;
-		bullets[i].Initialize(sprite.getPosition(),mousePosition, 1.0f);
+		bullets[i].Initialize(sprite.getPosition(),mousePosition, 0.5f); // yg terakhir bullet speed ya
 
 		fireRateTimer = 0;
 	}
@@ -87,9 +87,6 @@ void Player::Update(float deltaTime,Dummy& dummy, sf::Vector2f mousePosition)
 
 	for (size_t i = 0; i < bullets.size(); i++)
 	{
-		/*sf::Vector2f bulletDirection = mousePosition - bullets[i].getPosition();
-		bulletDirection = Math::NormalizedVector(bulletDirection);
-		bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * speed * deltaTime);*/
 		bullets[i].Update(deltaTime);
 
 		if (dummy.health > 0)
@@ -97,7 +94,7 @@ void Player::Update(float deltaTime,Dummy& dummy, sf::Vector2f mousePosition)
 			if (Math::DidRectColide(bullets[i].GetGlobalBounds(), dummy.sprite.getGlobalBounds()))
 			{
 				bullets.erase(bullets.begin() + i);
-				std::cout << "Ughh..." << std::endl;
+				//std::cout << "Ughh..." << std::endl;
 				dummy.health -= damage;
 			}
 		}
